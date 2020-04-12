@@ -8,17 +8,17 @@ export class WebFaaS {
     private config: Config | null = null;
     private core: Core | null = null;
     private pluginManager: PluginManager | null = null;
-    private pathConfigFile: string = "";
-
+    private pathConfigFile: string | null = null;
+    private pathNodeModulesDirectory: string | null = null;
+    private pathRootPackageDirectory: string | null = null;
+    private pathCurrentWorkingDirectory: string | null = null;
+    
     /**
      * return WebFaaS - Config
      */
     getConfig(): Config{
         if (!this.config){
-            if (!this.pathConfigFile){
-                this.pathConfigFile = this.searchConfigFile();
-            }
-            let newConfig = new Config(this.pathConfigFile);
+            let newConfig = new Config(this.getPathConfigFile());
             this.setConfig(new Config());
             return newConfig;
         }
@@ -26,6 +26,7 @@ export class WebFaaS {
             return this.config;
         }
     }
+
     /**
      * set config
      * @param config 
@@ -46,14 +47,97 @@ export class WebFaaS {
     }
 
     /**
+     * return cwd
+     */
+    getPathCurrentWorkingDirectory(): string{
+        if (this.pathCurrentWorkingDirectory === null){
+            this.setPathCurrentWorkingDirectory(process.cwd());
+            return process.cwd();
+        }
+        else{
+            return this.pathCurrentWorkingDirectory;
+        }
+
+    }
+    /**
+     * set cwd
+     * @param value cwd
+     */
+    setPathCurrentWorkingDirectory(value: string): void{
+        this.pathCurrentWorkingDirectory = value;
+    }
+
+    /**
+     * return path config files
+     */
+    getPathConfigFile(): string{
+        if (this.pathConfigFile === null){
+            let newPathConfigFile = this.searchConfigFile();
+            this.setPathConfigFile(newPathConfigFile);
+            return newPathConfigFile;
+        }
+        else{
+            return this.pathConfigFile;
+        }
+    }
+    /**
+     * set path config files
+     * @param value path config files
+     */
+    setPathConfigFile(value: string): void{
+        this.pathConfigFile = value;
+    }
+
+    /**
+     * return path node modules directory
+     */
+    getPathNodeModulesDirectory(): string{
+        if (this.pathNodeModulesDirectory === null){
+            let newPathNodeModulesDirectory = this.searchNodeModulesDirectory();
+            this.setPathNodeModulesDirectory(newPathNodeModulesDirectory);
+            return newPathNodeModulesDirectory;
+        }
+        else{
+            return this.pathNodeModulesDirectory;
+        }
+    }
+    /**
+     * set path node_modules directory
+     * @param value path node modules
+     */
+    setPathNodeModulesDirectory(value: string): void{
+        this.pathNodeModulesDirectory = value;
+    }
+
+    /**
+     * return path root package directory
+     */
+    getPathRootPackageDirectory(): string{
+        if (this.pathRootPackageDirectory === null){
+            let newPathRootPackageDirectory = this.searchRootPackageDirectory();
+            this.setPathRootPackageDirectory(newPathRootPackageDirectory);
+            return newPathRootPackageDirectory;
+        }
+        else{
+            return this.pathRootPackageDirectory;
+        }
+    }
+    /**
+     * set path root package directory
+     * @param value path node modules
+     */
+    setPathRootPackageDirectory(value: string): void{
+        this.pathRootPackageDirectory = value;
+    }
+
+    /**
      * return plugin manager
      */
     getPluginManager(): PluginManager{
         if (!this.pluginManager){
             this.pluginManager = new PluginManager(this.getCore());
-            let folderModules = this.searchModulesFolder();
-            if (folderModules){
-                this.loadPluginsByFolder(folderModules);
+            if (this.getPathNodeModulesDirectory()){
+                this.loadPluginsByFolder(this.getPathNodeModulesDirectory());
             }
         }
         return this.pluginManager;
@@ -67,6 +151,10 @@ export class WebFaaS {
         this.getPluginManager().loadPluginsByFolder(baseFolder);
     }
 
+    /**
+     * convert args to command data
+     * @param args 
+     */
     convertArgsToCommandData(args: string[]): IWebFaaSCommandData{
         var commandParameter = {} as IWebFaaSCommandData;
 
@@ -102,6 +190,9 @@ export class WebFaaS {
         return commandParameter;
     }
 
+    /**
+     * print help
+     */
     printHelp(){
         console.log("Usage:");
         console.log("  webfaas --help");
@@ -109,20 +200,26 @@ export class WebFaaS {
         console.log("  webfaas --config [path] --plugins [path, ...]");
     }
 
-    searchConfigFile(): string{
+    /**
+     * search config file
+     */
+    private searchConfigFile(): string{
         const listFile: Array<string> = [];
         if (process.env["WEBFAAS_CONFIG"]){
             listFile.push(process.env["WEBFAAS_CONFIG"]);
         }
-        listFile.push(path.join(process.cwd(), "webfaas.json"));
+        listFile.push(path.join(this.getPathCurrentWorkingDirectory(), "webfaas.json"));
         listFile.push(path.join(__dirname, "webfaas.json"));
 
         return this.searchExistFileInArray(listFile);
     }
 
-    searchModulesFolder(): string{
+    /**
+     * search node modules directory
+     */
+    private searchNodeModulesDirectory(): string{
         const listFile: Array<string> = [];
-        listFile.push(path.join(process.cwd(), "node_modules"));
+        listFile.push(path.join(this.getPathCurrentWorkingDirectory(), "node_modules"));
         if (require.main){
             listFile.push(...require.main.paths);
         }
@@ -130,7 +227,23 @@ export class WebFaaS {
         return this.searchExistFileInArray(listFile);
     }
 
-    searchExistFileInArray(listFile: Array<string>): string{
+    /**
+     * search root package directory
+     */
+    private searchRootPackageDirectory(): string{
+        if (this.searchExistFileInArray([path.join(this.getPathCurrentWorkingDirectory(), "package.json")])){
+            return this.getPathCurrentWorkingDirectory();
+        }
+        else{
+            return "";
+        }
+    }
+
+    /**
+     * search exist file in array
+     * @param listFile 
+     */
+    private searchExistFileInArray(listFile: Array<string>): string{
         for (let i = 0; i < listFile.length; i++){
             let file = listFile[i];
             if (fs.existsSync(file)){
@@ -145,11 +258,19 @@ export class WebFaaS {
      * @param parameter 
      */
     configureByCommandData(commandData: IWebFaaSCommandData){
-        this.pathConfigFile = commandData.config;
+        if (commandData.config){
+            this.setPathConfigFile(commandData.config);
+        }
         
         for (let i = 0; i < commandData.plugins.length; i++){
             let folderPlugin = commandData.plugins[i];
             this.loadPluginsByFolder(folderPlugin);
+        }
+
+        let rootPackageDirectory = this.getPathRootPackageDirectory();
+        
+        if (rootPackageDirectory && (rootPackageDirectory.substr(-8) !== (path.sep + "webfaas"))){ //ignore webfaas module
+            this.getCore().getModuleManager().getModuleManagerCache().addLocalDiskModuleToCache(rootPackageDirectory);
         }
     }
 

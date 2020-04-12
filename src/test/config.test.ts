@@ -19,7 +19,7 @@ describe("Config", () => {
     it("searchConfigFile", function(){
         const faas = new WebFaaS();
         process.env["WEBFAAS_CONFIG"] = "/tmp";
-        chai.expect(faas.searchConfigFile()).to.eq("/tmp");
+        chai.expect(faas.getPathConfigFile()).to.eq("/tmp");
         process.env["WEBFAAS_CONFIG"] = "";
     })
 })

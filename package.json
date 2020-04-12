@@ -12,7 +12,7 @@
     "test": "mocha --config scripts/mocha.json",
     "test:coverage": "nyc --nycrc-path scripts/nyc.json npm run test",
     "start": "node_modules/.bin/tsc -w && npm run build:static",
-    "build": "npm run build:clean && node_modules/.bin/tsc && npm run build:static",
+    "build": "npm run build:clean && node_modules/.bin/tsc && npm run build:static && chmod +x dist/bin/webfaas.js",
     "build:clean": "rm -rf dist",
     "build:static": "cp package.json dist && cp README.md dist && cp .npmignore dist && cp -R src/test/data dist/test",
     "setnpmtoken": "rm ~/.npmrc && echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc",
@@ -29,7 +29,7 @@
     "webfaas": "bin/webfaas.js"
   },
   "dependencies": {
-    "@webfaas/webfaas-core": "^0.7",
+    "@webfaas/webfaas-core": "^0.8",
     "@webfaas/webfaas-plugin-packageregistry-disk": "0.1.0",
     "@webfaas/webfaas-plugin-packageregistry-github": "0.1.0",
     "@webfaas/webfaas-plugin-packageregistry-npm": "0.1.0",

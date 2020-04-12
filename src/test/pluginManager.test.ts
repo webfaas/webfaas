@@ -3,8 +3,14 @@ import * as chai from "chai";
 import { WebFaaS } from "../WebFaaS";
 
 describe("PluginManager", () => {
-    it("convertArgsToCommandData", function(){
+    it("default", function(){
         const faas = new WebFaaS();
         chai.expect(faas.getPluginManager().listPlugin.length).to.eql(5);
+    })
+
+    it("simulate whithout node_module", function(){
+        const faas = new WebFaaS();
+        faas.setPathNodeModulesDirectory("");
+        chai.expect(faas.getPluginManager().listPlugin.length).to.eql(0);
     })
 })
