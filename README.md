@@ -14,15 +14,25 @@ Minimalist FaaS framework for [node](http://nodejs.org).
 ### Example
 ```javascript
 import { WebFaaS } from "@webfaas/webfaas";
+import { IMessage, IMessageHeaders } from "@webfaas/webfaas-core";
 
 const faas = new WebFaaS();
 
 (async function(){
     await faas.start();
 
-    var response = await faas.getCore().invokeAsync("@webfaaslabs/mathsum", "0.0.1", "", [2,3], "npm");
-    
-    console.log("2 + 3 = ", response);
+    let msgSum = {} as IMessage;
+    msgSum.header = {} as IMessageHeaders;
+    msgSum.header.messageID = "1";
+    msgSum.header.name = "@webfaaslabs/math";
+    msgSum.header.method = "sum";
+    msgSum.header.version = "0.0.1";
+    msgSum.payload = {x:2,y:3};
+
+    let responseSum = await faas.getCore().sendMessage(msgSum);
+    console.log("2 + 3 = ", responseSum);
+
+    await faas.stop();
 })();
 ```
 
