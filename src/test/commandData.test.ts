@@ -91,7 +91,7 @@ describe("CommandData", () => {
         faas.setPathRootPackageDirectory(path.join(__dirname, "data", "modules", "moduletest1"));
         let command1 = faas.convertArgsToCommandData([]);
         faas.configureByCommandData(command1);
-        let response = await faas.getCore().invokeAsync("moduletest1", "1.0.0", undefined, [2,3]);
-        chai.expect(response).to.eq(5);
+        let moduleTest: any = await faas.getCore().import("moduletest1", "1.0.0");
+        chai.expect(moduleTest(2,3)).to.eq(5);
     })
 })

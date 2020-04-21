@@ -29,20 +29,21 @@
     "webfaas": "bin/webfaas.js"
   },
   "dependencies": {
-    "@webfaas/webfaas-core": "^0.8",
-    "@webfaas/webfaas-plugin-packageregistry-disk": "0.1.0",
-    "@webfaas/webfaas-plugin-packageregistry-github": "0.1.0",
-    "@webfaas/webfaas-plugin-packageregistry-npm": "0.1.0",
-    "@webfaas/webfaas-plugin-packageregistryrouting": "0.1.0",
-    "@webfaas/webfaas-plugin-packagestore-cache-disk": "0.1.0"
+    "@webfaas/webfaas-core": "^0.11.0",
+    "@webfaas/webfaas-plugin-endpoint-http": "^0.1",
+    "@webfaas/webfaas-plugin-packageregistry-disk": "^0.1",
+    "@webfaas/webfaas-plugin-packageregistry-github": "^0.1",
+    "@webfaas/webfaas-plugin-packageregistry-npm": "^0.1",
+    "@webfaas/webfaas-plugin-packageregistryrouting": "^0.1",
+    "@webfaas/webfaas-plugin-packagestore-cache-disk": "^0.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.2",
-    "@types/mocha": "^7.0",
-    "@types/node": "^13.7",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.1",
     "chai": "^4.2",
-    "mocha": "^7.1",
-    "nyc": "^15.0",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
     "typescript": "^3.8",
     "typescript-tslint-plugin": "^0.5"
   },
