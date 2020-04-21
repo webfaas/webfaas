@@ -278,6 +278,9 @@ export class WebFaaS {
      * start
      */
     async start(){
+        const config = this.getConfig();
+        this.getCore().getPackageRegistryManager().setDefaultRegistryName(config.get("registry.default", "npm"));
+        
         await this.getPluginManager().start();
     }
 

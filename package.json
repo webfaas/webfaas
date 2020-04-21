@@ -1,6 +1,6 @@
 {
   "name": "@webfaas/webfaas",
-  "version": "0.1.0-alpha1",
+  "version": "0.1.0",
   "description": "WebFaaS Framework",
   "main": "lib/index.js",
   "readmeFilename": "README.md",
@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@webfaas/webfaas-core": "^0.11.0",
-    "@webfaas/webfaas-plugin-endpoint-http": "^0.1",
     "@webfaas/webfaas-plugin-packageregistry-disk": "^0.1",
     "@webfaas/webfaas-plugin-packageregistry-github": "^0.1",
     "@webfaas/webfaas-plugin-packageregistry-npm": "^0.1",
