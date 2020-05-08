@@ -18,7 +18,8 @@ export class WebFaaS {
      */
     getConfig(): Config{
         if (!this.config){
-            let newConfig = new Config(this.getPathConfigFile());
+            let newConfig = new Config();
+            newConfig.read(this.getPathConfigFile());
             this.setConfig(new Config());
             return newConfig;
         }
