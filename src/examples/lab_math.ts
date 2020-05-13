@@ -1,9 +1,10 @@
 "use strict";
 
-import { WebFaaS } from "../WebFaaS";
+import { WebFaaS } from "../lib/WebFaaS";
 import { IMessage, IMessageHeaders } from "@webfaas/webfaas-core";
 
 const faas = new WebFaaS();
+faas.scanAndLoadPlugins();
 
 (async function(){
     await faas.start();

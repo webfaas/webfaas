@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as chai from "chai";
-import { WebFaaS } from "../WebFaaS";
+import { WebFaaS } from "../lib/WebFaaS";
 
 describe("CommandData", () => {
     it("convertArgsToCommandData", function(){

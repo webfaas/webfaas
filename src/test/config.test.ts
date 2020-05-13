@@ -1,6 +1,5 @@
-import * as path from "path";
 import * as chai from "chai";
-import { WebFaaS } from "../WebFaaS";
+import { WebFaaS } from "../lib/WebFaaS";
 import { Config } from "@webfaas/webfaas-core/lib/Config/Config";
 
 describe("Config", () => {

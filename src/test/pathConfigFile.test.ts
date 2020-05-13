@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import { WebFaaS } from "../WebFaaS";
+import { WebFaaS } from "../lib/WebFaaS";
 
 describe("PathConfigFile", () => {
     it("getPathConfigFile", function(){

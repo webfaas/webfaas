@@ -137,11 +137,18 @@ export class WebFaaS {
     getPluginManager(): PluginManager{
         if (!this.pluginManager){
             this.pluginManager = new PluginManager(this.getCore());
-            if (this.getPathNodeModulesDirectory()){
-                this.loadPluginsByFolder(this.getPathNodeModulesDirectory());
-            }
         }
         return this.pluginManager;
+    }
+
+    /**
+     * scan and load plugins
+     */
+    scanAndLoadPlugins(): void{
+        let folder = this.getPathNodeModulesDirectory();
+        if (folder){
+            this.loadPluginsByFolder(folder);
+        }
     }
 
     /**
@@ -292,3 +299,5 @@ export class WebFaaS {
         await this.getPluginManager().stop();
     }
 }
+
+export { Core } from "@webfaas/webfaas-core";

@@ -17,6 +17,7 @@ import { WebFaaS } from "@webfaas/webfaas";
 import { IMessage, IMessageHeaders } from "@webfaas/webfaas-core";
 
 const faas = new WebFaaS();
+faas.scanAndLoadPlugins();
 
 (async function(){
     await faas.start();
