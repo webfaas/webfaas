@@ -12,6 +12,11 @@ export class WebFaaS {
     private pathNodeModulesDirectory: string | null = null;
     private pathRootPackageDirectory: string | null = null;
     private pathCurrentWorkingDirectory: string | null = null;
+    private started: boolean = false;
+
+    getStarted(): boolean{
+        return this.started;
+    }
     
     /**
      * return WebFaaS - Config
@@ -286,17 +291,24 @@ export class WebFaaS {
      * start
      */
     async start(){
-        const config = this.getConfig();
-        this.getCore().getPackageRegistryManager().setDefaultRegistryName(config.get("registry.default", "npm"));
-        
-        await this.getPluginManager().start();
+        if (this.started === false){
+            const config = this.getConfig();
+            this.getCore().getPackageRegistryManager().setDefaultRegistryName(config.get("registry.default", "npm"));
+            
+            await this.getPluginManager().start();
+    
+            this.started = true;
+        }
     }
 
     /**
      * stop
      */
     async stop(){
-        await this.getPluginManager().stop();
+        if (this.started){
+            await this.getPluginManager().stop();
+            this.started = false;
+        }
     }
 }
 
