@@ -2,7 +2,7 @@ import * as path from "path";
 import * as chai from "chai";
 import { WebFaaS } from "../lib/WebFaaS";
 
-describe("convertArgsToCommandData", () => {
+describe("default", () => {
     const faas = new WebFaaS();
     
     it("getCore", function(){
@@ -21,9 +21,5 @@ describe("convertArgsToCommandData", () => {
         chai.expect(faas.getStarted()).to.eq(false);
         await faas.stop();
         chai.expect(faas.getStarted()).to.eq(false);
-    })
-
-    it("printHelp", function(){
-        faas.printHelp();
     })
 })
