@@ -1,6 +1,6 @@
 {
   "name": "@webfaas/webfaas",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "WebFaaS Framework",
   "main": "lib/WebFaaS.js",
   "readmeFilename": "README.md",
@@ -26,7 +26,7 @@
     "url": "git@github.com:webfaas/webfaas.git"
   },
   "dependencies": {
-    "@webfaas/webfaas-core": "^0.12"
+    "@webfaas/webfaas-core": "^0.13"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
